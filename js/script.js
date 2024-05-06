@@ -7,14 +7,20 @@ const result = document.getElementById('result');
 // Теперь запрос можно отправить с помощью метода send()
 btn.addEventListener('click', () => {
     const xhr = new XMLHttpRequest;
-    xhr.open('GET', 'content.txt');
+    xhr.open('GET', 'friends.json');
     xhr.send();
 
     xhr.addEventListener('load', () => {
-        if (xhr.status === 404) {
+        if (xhr.status >= 400) {
             console.log('Something went wrong');
-        } else {
-            console.log(xhr.responseText);
+            result.textContent = 'Something went wrong';
+        } else {    
+            const friends = JSON.parse(xhr.responseText);
+            console.log(friends);
+            friends.forEach((friend) => {
+                result.innerHTML += friend.name;
+                result.innerHTML += friend.lastname;
+            })
         }
     })
 })
